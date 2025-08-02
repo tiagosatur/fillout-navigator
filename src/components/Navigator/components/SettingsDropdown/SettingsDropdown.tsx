@@ -15,7 +15,6 @@ interface SettingsDropdownProps {
   isOpen: boolean;
   onClose: () => void;
   pageId: string;
-  pageName: string;
   triggerElement?: HTMLElement | null;
   pageActions: PageAction[];
   onPageAction: PageActionHandler;
@@ -25,7 +24,6 @@ export const SettingsDropdown = ({
   isOpen,
   onClose,
   pageId,
-  pageName,
   triggerElement,
   pageActions,
   onPageAction,

@@ -112,7 +112,6 @@ export const NavButton = ({
           isOpen={isDropdownOpen}
           onClose={() => onDropdownToggle?.()}
           pageId={pageId}
-          pageName={label}
           triggerElement={settingButtonRef.current}
           pageActions={pageActions}
           onPageAction={onPageAction}
