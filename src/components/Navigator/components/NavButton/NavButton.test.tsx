@@ -4,10 +4,10 @@ import { NavButton, type PageIconTypes } from './NavButton';
 import type { PageAction, PageActionHandler } from '@/types';
 
 vi.mock('../SettingsDropdown/SettingsDropdown', () => ({
-  SettingsDropdown: ({ isOpen, onClose, pageId, pageName }: any) =>
+  SettingsDropdown: ({ isOpen, onClose, pageId }: any) =>
     isOpen ? (
       <div data-testid='settings-dropdown'>
-        Settings for {pageName} ({pageId})
+        Settings for page ({pageId})
         <button onClick={onClose}>Close</button>
       </div>
     ) : null,
@@ -178,7 +178,7 @@ describe('NavButton', () => {
 
       expect(screen.getByTestId('settings-dropdown')).toBeInTheDocument();
       expect(
-        screen.getByText('Settings for Form Introduction (intro-page)')
+        screen.getByText('Settings for page (intro-page)')
       ).toBeInTheDocument();
     });
 
