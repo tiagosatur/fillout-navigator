@@ -12,14 +12,12 @@ export const colors = {
   black: 'rgba(26, 26, 26, 1)', // For default text color
 };
 
-// Backgroun color
 export const BACKGROUND_COLORS = {
   WHITE: colors.white,
   DEFAULT: colors.gray.fithteen,
   HOVER: colors.gray.thirtyfive,
 } as const;
 
-// Icon color
 export const ICON_COLORS = {
   ACTIVE: colors.yellow,
   BLACK: colors.black,

@@ -7,8 +7,7 @@ vi.mock('../SettingsDropdown/SettingsDropdown', () => ({
   SettingsDropdown: ({ isOpen, onClose, pageId }: any) =>
     isOpen ? (
       <div data-testid='settings-dropdown'>
-        Settings for page ({pageId})
-        <button onClick={onClose}>Close</button>
+        Settings for page ({pageId})<button onClick={onClose}>Close</button>
       </div>
     ) : null,
 }));
@@ -202,7 +201,6 @@ describe('NavButton', () => {
       });
       expect(screen.queryByTestId('settings-dropdown')).not.toBeInTheDocument();
 
-      // Missing pageId
       renderNavButton({
         isActive: true,
         isDropdownOpen: true,

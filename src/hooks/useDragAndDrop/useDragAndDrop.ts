@@ -64,17 +64,12 @@ export const useDragAndDrop = ({
   const activePage = pages.find((page) => page.id === activeId);
 
   return {
-    // State
     activeId,
     activePage,
     pageIds,
-
-    // Event handlers
+    sensors,
     handleDragStart,
     handleDragEnd,
-
-    // Configuration
-    sensors,
     collisionDetection: closestCenter,
     sortingStrategy: horizontalListSortingStrategy,
   };

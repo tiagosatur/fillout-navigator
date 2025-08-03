@@ -121,7 +121,6 @@ export const timeFields = [
   },
 ];
 
-// Filter fields based on search term
 export const filterFields = (
   fields: typeof frequentlyUsedFields,
   searchTerm: string

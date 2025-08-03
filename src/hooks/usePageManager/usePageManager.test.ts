@@ -2,7 +2,6 @@ import { renderHook, act } from '@testing-library/react';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { usePageManager, type PageType } from './usePageManager';
 
-// Mock crypto.randomUUID to make tests predictable
 const mockUUID = vi.fn();
 Object.defineProperty(globalThis, 'crypto', {
   value: {
@@ -19,7 +18,6 @@ const setup = () => {
 describe('usePageManager', () => {
   beforeEach(() => {
     mockUUID.mockReset();
-    // Return predictable UUIDs for testing
     mockUUID
       .mockReturnValueOnce('initial-page-1')
       .mockReturnValueOnce('initial-page-2')

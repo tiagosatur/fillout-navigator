@@ -28,10 +28,7 @@ export const Navigator = () => {
     moveToFirst,
   } = usePageManager();
 
-  // Dropdown state management
   const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
-
-  // Scroll state management
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
 
