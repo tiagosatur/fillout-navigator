@@ -66,7 +66,6 @@ export const usePageActions = ({
     []
   );
 
-  // Handle page actions with business logic
   const handlePageAction: PageActionHandler = useCallback(
     (pageId: string, actionId: string) => {
       const action = pageActions.find((a) => a.id === actionId);

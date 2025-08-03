@@ -7,8 +7,7 @@ vi.mock('../SettingsDropdown/SettingsDropdown', () => ({
   SettingsDropdown: ({ isOpen, onClose, pageId }: any) =>
     isOpen ? (
       <div data-testid='settings-dropdown'>
-        Settings for page ({pageId})
-        <button onClick={onClose}>Close</button>
+        Settings for page ({pageId}) <button onClick={onClose}>Close</button>
       </div>
     ) : null,
 }));
@@ -16,7 +15,7 @@ vi.mock('../SettingsDropdown/SettingsDropdown', () => ({
 describe('NavButton', () => {
   const mockOnClick = vi.fn();
   const mockOnFocus = vi.fn();
-  const mockOnDropdownToggle = vi.fn();
+  const mockOnDropdownOpen = vi.fn();
   const mockOnPageAction = vi.fn() as PageActionHandler;
 
   const defaultProps = {
@@ -131,7 +130,7 @@ describe('NavButton', () => {
       pageId: 'intro-page',
       pageActions,
       onPageAction: mockOnPageAction,
-      onDropdownToggle: mockOnDropdownToggle,
+      onDropdownOpen: mockOnDropdownOpen,
     };
 
     it('opens settings dropdown on click', () => {
@@ -140,7 +139,7 @@ describe('NavButton', () => {
       const settingsButton = screen.getByLabelText('Page settings dropdown');
       fireEvent.click(settingsButton);
 
-      expect(mockOnDropdownToggle).toHaveBeenCalledOnce();
+      expect(mockOnDropdownOpen).toHaveBeenCalledOnce();
     });
 
     it('prevents event bubbling from settings button', () => {
@@ -151,7 +150,7 @@ describe('NavButton', () => {
 
       // Page click should not trigger when clicking settings
       expect(mockOnClick).not.toHaveBeenCalled();
-      expect(mockOnDropdownToggle).toHaveBeenCalledOnce();
+      expect(mockOnDropdownOpen).toHaveBeenCalledOnce();
     });
 
     it('supports keyboard navigation for settings', () => {
@@ -159,22 +158,29 @@ describe('NavButton', () => {
 
       const settingsButton = screen.getByLabelText('Page settings dropdown');
 
+      // First keypress opens dropdown
       fireEvent.keyDown(settingsButton, { key: 'Enter' });
-      expect(mockOnDropdownToggle).toHaveBeenCalledTimes(1);
+      expect(mockOnDropdownOpen).toHaveBeenCalledTimes(1);
 
+      // Second keypress closes dropdown (no additional onDropdownOpen call)
       fireEvent.keyDown(settingsButton, { key: ' ' });
-      expect(mockOnDropdownToggle).toHaveBeenCalledTimes(2);
+      expect(mockOnDropdownOpen).toHaveBeenCalledTimes(1);
+
+      // Third keypress opens again
+      fireEvent.keyDown(settingsButton, { key: 'Enter' });
+      expect(mockOnDropdownOpen).toHaveBeenCalledTimes(2);
 
       // Non-activation keys should not trigger
       fireEvent.keyDown(settingsButton, { key: 'Tab' });
-      expect(mockOnDropdownToggle).toHaveBeenCalledTimes(2);
+      expect(mockOnDropdownOpen).toHaveBeenCalledTimes(2);
     });
 
     it('renders dropdown when open with page context', () => {
-      renderNavButton({
-        ...activePageProps,
-        isDropdownOpen: true,
-      });
+      renderNavButton(activePageProps);
+
+      // Click settings button to open dropdown (internal state)
+      const settingsButton = screen.getByLabelText('Page settings dropdown');
+      fireEvent.click(settingsButton);
 
       expect(screen.getByTestId('settings-dropdown')).toBeInTheDocument();
       expect(
@@ -183,23 +189,33 @@ describe('NavButton', () => {
     });
 
     it('handles dropdown close', () => {
-      renderNavButton({
-        ...activePageProps,
-        isDropdownOpen: true,
-      });
+      renderNavButton(activePageProps);
 
+      // First open the dropdown
+      const settingsButton = screen.getByLabelText('Page settings dropdown');
+      fireEvent.click(settingsButton);
+
+      // Verify dropdown is open
+      expect(screen.getByTestId('settings-dropdown')).toBeInTheDocument();
+
+      // Close dropdown via the close mechanism in SettingsDropdown
       fireEvent.click(screen.getByText('Close'));
-      expect(mockOnDropdownToggle).toHaveBeenCalledOnce();
+
+      // Note: onDropdownOpen is only called when opening, not closing
+      expect(mockOnDropdownOpen).toHaveBeenCalledOnce();
     });
 
     it('only renders dropdown with complete configuration', () => {
       // Missing pageActions
       renderNavButton({
         isActive: true,
-        isDropdownOpen: true,
         pageId: 'test',
         onPageAction: mockOnPageAction,
       });
+
+      // Try to open dropdown
+      const settingsButton = screen.getByLabelText('Page settings dropdown');
+      fireEvent.click(settingsButton);
       expect(screen.queryByTestId('settings-dropdown')).not.toBeInTheDocument();
 
       // Missing pageId

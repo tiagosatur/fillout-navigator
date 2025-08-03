@@ -9,6 +9,7 @@ import {
   usePageManager,
   usePageActions,
 } from '@/hooks';
+import { useNavButtonRefs } from '@/hooks/useNavButtonRefs';
 import { DragOverlayNavButton } from '@/components/Navigator/components/DragOverlayNavButton/DragOverlayNavButton';
 import { SortableNavButton } from '@/components/Navigator/components/SortableNavButton/SortableNavButton';
 import { PageSeparator } from '@/components/Navigator/components/PageSeparator/PageSeparator';
@@ -28,8 +29,8 @@ export const Navigator = () => {
     moveToFirst,
   } = usePageManager();
 
-  // Dropdown state management
-  const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
+  const { getNavButtonRef, closeOtherDropdowns, closeAllDropdowns } =
+    useNavButtonRefs(pages);
 
   // Scroll state management
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -105,15 +106,10 @@ export const Navigator = () => {
     }
   }, [pages.length, checkScrollPosition]);
 
-  const toggleDropdown = useCallback((pageId: string) => {
-    setOpenDropdownId((prev) => (prev === pageId ? null : pageId));
-  }, []);
-
-  // Use page actions hook
   const { pageActions, handlePageAction } = usePageActions({
     pages,
     pageManager: { moveToFirst, renamePage, removePage },
-    onCloseDropdown: () => setOpenDropdownId(null),
+    onCloseDropdown: closeAllDropdowns,
   });
 
   return (
@@ -155,9 +151,12 @@ export const Navigator = () => {
               const isEnd = index === pages.length - 1;
               const key = `page-button-${page.id}`;
 
+              const navButtonRef = getNavButtonRef(page.id);
+
               return (
                 <Fragment key={key}>
                   <SortableNavButton
+                    ref={navButtonRef}
                     id={page.id}
                     label={page.label}
                     icon={page.icon}
@@ -166,10 +165,9 @@ export const Navigator = () => {
                     onClick={() => onMenuClick(page.id)}
                     onFocus={() => onFocus(page.id)}
                     onKeyDown={keyDown(page.id)}
-                    isDropdownOpen={openDropdownId === page.id}
-                    onDropdownToggle={() => toggleDropdown(page.id)}
                     pageActions={pageActions}
                     onPageAction={handlePageAction}
+                    onDropdownOpen={closeOtherDropdowns}
                   />
                   <PageSeparator
                     onAddPageAfter={() => addPageAfter(index)}

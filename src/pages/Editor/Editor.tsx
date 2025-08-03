@@ -1,4 +1,4 @@
-import Form from '@/components/Form/Form';
+import { Form } from '@/components/Form/Form';
 import { Sidebar } from '@/components/Sidebar/Sidebar';
 import { Navigator } from '@/components/Navigator/Navigator';
 

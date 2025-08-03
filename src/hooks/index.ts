@@ -5,3 +5,4 @@ export { useDragAndDrop } from './useDragAndDrop/useDragAndDrop';
 export { useKeyboardNavigation } from './useKeyboardNavigation';
 export { useDropdownPositioning } from './useDropdownPositioning';
 export { usePageActions } from './usePageActions';
+export { useNavButtonRefs } from './useNavButtonRefs';

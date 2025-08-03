@@ -1,4 +1,4 @@
-import { useState, type ChangeEvent } from 'react';
+import { useState, memo, type ChangeEvent } from 'react';
 import { BackgroundContainer } from '@/components/Form/BackgroundContainer/BackgroundContainer';
 import { FormCard } from '@/components/Form/FormCard/FormCard';
 import { FormHeader } from '@/components/Form/FormHeader/FormHeader';
@@ -6,7 +6,7 @@ import { EmailInput } from '@/components/Form/EmailInput/EmailInput';
 import { SubmitButton } from '@/components/Form/SubmitButton/SubmitButton';
 import { ThemeBadge } from '@/components/Form/ThemeBadge/ThemeBadge';
 
-export default function Form() {
+export const Form = memo(() => {
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -51,4 +51,4 @@ export default function Form() {
       </FormCard>
     </BackgroundContainer>
   );
-}
+});
