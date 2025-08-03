@@ -2,6 +2,8 @@
 
 A React TypeScript application built with Vite for navigating and managing Fillout forms.
 
+![fillout](https://github.com/user-attachments/assets/6ac0f886-c6b8-4576-a172-6fb8f5076c6f)
+
 ## 🚀 Getting Started
 
 ### Prerequisites
